@@ -372,7 +372,7 @@ a > button:hover, #user-settings > div.account.section > div > div.right > butto
 	font-style: normal !important;
 }
 #chat .emote .icon-chat-host {
-	background: url(hhttps://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_bot.png) no-repeat top left !important;
+	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_bot.png) no-repeat top left !important;
 }
 #chat .emote .badge-box .bdg-og {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/badge_bot.png) no-repeat top left !important;
