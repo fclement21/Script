@@ -1,16 +1,22 @@
 /*le logo*/
-#Box {
+#Box, #icon {
 	position: absolute;
-	right: 345px;
-	top: 0;
-	width: 54px;
-	height: 54px;
-	cursor: pointer;
-	background: url(https://dl.dropboxusercontent.com/s/p58f0g0oxczxc4a/icon.png);
+	right: 345px; top: 0;
+	width: 54px; height: 54px;
+	background: radial-gradient(#111517, #111) ;
 	z-index: 90000;
 }
 #Box:hover {
-	background: url(https://dl.dropboxusercontent.com/s/yhboo8v35zgepld/icon-hover.png);
+	background: radial-gradient(#1A1A1A, #111517);
+}
+#icon {
+	position: relative;
+	top: 0; left: 0;
+	cursor: pointer;
+	background: url(https://rawgit.com/WiBla/Script/alpha/images/other/icon.png);
+}
+#icon:hover {
+	background: url(https://rawgit.com/WiBla/Script/alpha/images/other/icon-hover.png);
 }
 
 /*le menu*/
@@ -320,7 +326,7 @@ div.tab-menu > button {
 	border-bottom: none;
 }
 #user-menu .avatar {
-	background: url(https://dl.dropboxusercontent.com/s/9x7dbbnpq71cpyl/fond-avatar.jpg) !important;
+	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/other/fond-avatar.jpg) !important;
 	box-shadow: inset 0 0 15px #000;
 }
 #the-user-profile, #user-settings, #user-communities, #user-history, #user-friends, #user-store, #user-inventory {
@@ -366,10 +372,10 @@ a > button:hover, #user-settings > div.account.section > div > div.right > butto
 	font-style: normal !important;
 }
 #chat .emote .icon-chat-host {
-	background: url(https://dl.dropboxusercontent.com/s/3uzitr0tdqc3jvb/Dafty.png) no-repeat top left !important;
+	background: url(hhttps://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_bot.png) no-repeat top left !important;
 }
 #chat .emote .badge-box .bdg-og {
-	background: url(https://dl.dropboxusercontent.com/s/f2uya4g6pgfqqal/icon_android.png) no-repeat top left !important;
+	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/badge_bot.png) no-repeat top left !important;
 }
 #app-menu .button, #app-menu .list {
 	background: linear-gradient(to bottom, rgba(16,4,38,1) 0%,rgba(34,9,76,1) 100%) !important;
@@ -420,23 +426,23 @@ a > button:hover, #user-settings > div.account.section > div > div.right > butto
 	background: linear-gradient(to top, rgba(16,4,38,0.6) 0%,rgba(34,9,76,0.6) 100%);
 }
 .icon-chat-host {
-	background-image: url("https://dl.dropboxusercontent.com/s/f1vne37vw9949ca/icon.host.png");
+	background-image: url("https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_host.png");
 	background-position: 0 0;
 }
 .icon-chat-cohost, .cohost .icon-chat-host {
-	background-image: url("https://dl.dropboxusercontent.com/s/tdvb7vssdhg60vg/icon.hostmod.png");
+	background-image: url("https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_cohost.png");
 	background-position: 0 0;
 }
 .icon-chat-manager {
-	background-image: url("https://dl.dropboxusercontent.com/s/93yaygdcir8u4yd/icon.managermod.png");
+	background-image: url("https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_manager.png");
 	background-position: 0 0;
 }
 .icon-chat-bouncer {
-	background-image: url("https://dl.dropboxusercontent.com/s/s8hosywunppk13a/icon.bouncer2.png");
+	background-image: url("https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_bouncer.png");
 	background-position: 0 0;
 }
 .icon-chat-dj {
-	background-image: url("https://dl.dropboxusercontent.com/s/btwj06boln7ft35/icon.residentdjor.png");
+	background-image: url("https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_dj.png");
 	background-position: 0 0;
 }
 #chat, #chat-input, .cm, .un {
@@ -618,5 +624,5 @@ a > button:hover, #user-settings > div.account.section > div > div.right > butto
 	width: 342px;
 }
 #app-menu .button i {
-	background: url(https://dl.dropboxusercontent.com/s/xs2999ovf2caj18/Logo_Room.png);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/other/Logo_Room.png);
 }
