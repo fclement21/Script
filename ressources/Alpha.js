@@ -22,7 +22,7 @@ if (!document.getElementById("Css-WiBla")) {
 		$("#playback-container").after(Controls);
 	}
 	var box = $("#Box");
-	var settings = $("#Settings");
+	var settings = document.getElementById("#Settings");
 	var css = $("#WiBla-CSS");
 	//menu buttons
 	var wsWoot = $("#ws-woot");
