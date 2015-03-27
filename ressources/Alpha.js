@@ -14,7 +14,7 @@ if (!document.getElementById("Css-WiBla")) {
 	head.appendChild(link);
 	var Box = $("<div id='Box' onclick='slide()'><div id='icon'></div></div>");
 	$("#app-menu").after(Box);
-	var Settings = $("<div id='Settings'><ul><li id='ws-woot'>Auto-woot</li><li id='ws-join'>Auto-join</li><li id='ws-video'>Hide video</li><li id='ws-delChat'>Clear Chat</li><li id='ws-css'>Custom Style</li><li id='ws-off'>Shutdown</li><li id='ws-bg'>Custom Bg</li><li id='ws-lengthA'>Duration alert</li><li id='ws-V'>Alpha 6.2</li><ul></div>");
+	var Settings = $("<div id='Settings'><ul><li id='ws-woot'>Auto-woot</li><li id='ws-join'>Auto-join</li><li id='ws-video'>Hide video</li><li id='ws-delChat'>Clear Chat</li><li id='ws-css'>Custom Style</li><li id='ws-off'>Shutdown</li><li id='ws-bg'>Custom Bg</li><li id='ws-lengthA'>Duration alert</li><li id='ws-V'>Alpha 6.2</li></ul></div>");
 	$("#app-menu").after(Settings);
 	var isDev = (API.getUser().id==4506088) || (API.getUser().id == 4613422) || (API.getUser().id == 209178);
 	if (API.hasPermission(null, API.ROLE.BOUNCER) || isDev) {
