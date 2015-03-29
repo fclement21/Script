@@ -7,7 +7,7 @@
 	z-index: 90000;
 }
 #Box:hover {
-	background: radial-gradient(#1A1A1A, #111517);
+	background: radial-gradient(#252525, #1A1A1A);
 }
 #icon {
 	position: relative;
@@ -33,6 +33,10 @@
 	border-right: 0; border-top: 0;
 	border-radius: 0 0 0 15px;
 	box-shadow: inset 1px -1px 10px #0a0a0a;
+	-webkit-transition: all 0.25s;
+	-moz-transition: all 0.25s;
+	-o-transition: all 0.25s;
+	transition: all 0.25s;
 }
 #Settings ul {
 	list-style-type: none;
@@ -101,6 +105,10 @@
 	border: 2px solid silver;
 	border-top: none;
 	background: linear-gradient(to right, rgba(48,53,64,0.7), rgba(32,37,48,0.7)), linear-gradient(to bottom, #555, #222);
+	-webkit-transition: all 0.25s;
+	-moz-transition: all 0.25s;
+	-o-transition: all 0.25s;
+	transition: all 0.25s;
 	z-index: 4;
 }
 #ws-rmvDJ:hover, #wsSkip:hover {

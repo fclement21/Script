@@ -1,16 +1,22 @@
 /*le logo*/
-#Box {
+#Box, #icon {
 	position: absolute;
-	right: 345px;
-	top: 0;
-	width: 54px;
-	height: 54px;
-	cursor: pointer;
-	background: url(https://dl.dropboxusercontent.com/s/p58f0g0oxczxc4a/icon.png);
+	right: 345px; top: 0;
+	width: 54px; height: 54px;
+	background: radial-gradient(#111517, #111) ;
 	z-index: 90000;
 }
 #Box:hover {
-	background: url(https://dl.dropboxusercontent.com/s/yhboo8v35zgepld/icon-hover.png);
+	background: radial-gradient(#252525, #1A1A1A);
+}
+#icon {
+	position: relative;
+	top: 0; left: 0;
+	cursor: pointer;
+	background: url(https://rawgit.com/WiBla/Script/alpha/images/other/icon.png);
+}
+#icon:hover {
+	background: url(https://rawgit.com/WiBla/Script/alpha/images/other/icon-hover.png);
 }
 
 /*le menu*/
@@ -27,6 +33,10 @@
 	border-right: 0; border-top: 0;
 	border-radius: 0 0 0 15px;
 	box-shadow: inset 1px -1px 10px #0a0a0a;
+	-webkit-transition: all 0.25s;
+	-moz-transition: all 0.25s;
+	-o-transition: all 0.25s;
+	transition: all 0.25s;
 }
 #Settings ul {
 	list-style-type: none;
@@ -98,6 +108,10 @@
 	border: 2px solid silver;
 	border-top: none;
 	background: linear-gradient(to right, rgba(48,53,64,0.7), rgba(32,37,48,0.7)), linear-gradient(to bottom, #555, #222);
+	-webkit-transition: all 0.25s;
+	-moz-transition: all 0.25s;
+	-o-transition: all 0.25s;
+	transition: all 0.25s;
 	z-index: 4;
 }
 #ws-rmvDJ:hover, #wsSkip:hover {

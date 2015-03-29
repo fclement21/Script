@@ -5,38 +5,35 @@ var max_css = "https://rawgit.com/WiBla/Script/alpha/ressources/max.css",
 		min_css = "https://rawgit.com/WiBla/Script/alpha/ressources/min.css";
 
 if (!document.getElementById("Css-WiBla")) {
-	var head  = document.getElementsByTagName("head")[0];
-	var link  = document.createElement("link");
-	link.id   = "WiBla-CSS";
-	link.rel  = "stylesheet";
-	link.type = "text/css";
-	link.href = max_css;
-	head.appendChild(link);
+	//creating the necessary element
+	var Css = $("<link id='WiBla-CSS' rel='stylesheet' type='text/css' href='"+max_css+"'>");
+	$("head").after(Css);
 	var Box = $("<div id='Box' onclick='slide()'><div id='icon'></div></div>");
 	$("#app-menu").after(Box);
 	var Settings = $("<div id='Settings'><ul><li id='ws-woot'>Auto-woot</li><li id='ws-join'>Auto-join</li><li id='ws-video'>Hide video</li><li id='ws-delChat'>Clear Chat</li><li id='ws-css'>Custom Style</li><li id='ws-off'>Shutdown</li><li id='ws-bg'>Custom Bg</li><li id='ws-lengthA'>Duration alert</li><li id='ws-V'>Alpha 6.2</li><ul></div>");
 	$("#app-menu").after(Settings);
-	var isDev = (API.getUser().id==4506088) || (API.getUser().id == 4613422) || (API.getUser().id == 209178);
-	if (API.hasPermission(null, API.ROLE.BOUNCER) || isDev) {
+	//buttons below the video must appear ONLY if the user is at least bouncer or Dev
+	var WiBla = API.getUser().id == 4613422,
+		zurbo = API.getUser().id==4506088,
+		dano = API.getUser().id == 209178,
+		isDev = WiBla || zurbo || dano,
+		hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev;
+	//the result
+	if (hasPermBouncer) {
 		var Controls = $("<div id='ws-rmvDJ'><img src='https://dl.dropboxusercontent.com/s/ou587hh6d0ov90w/romveDJ.png' alt='button remove from wait-list' /></div><div id='wsSkip' onclick='API.moderateForceSkip();'><img src='https://dl.dropboxusercontent.com/s/0fn3plmg2yhy6rf/skip.png' alt='button skip'/></div>");
 		$("#playback-container").after(Controls);
 	}
-	var box = $("#Box");
-	var settings = $("#Settings");
-	var css = $("#WiBla-CSS");
+	
 	//menu buttons
-	var wsWoot = $("#ws-woot");
-	wsWoot.click(function(){
+	$("#ws-woot").click(function(){
 		autoW = !autoW;
 		autowoot();
 	});
-	var wsJoin = $("#ws-join");
- 	wsJoin.click(function(){
+	$("#ws-join").click(function(){
 		autoDj = !autoDj;
 		autojoin();
 	});
-	var wsVideo = $("#ws-video");
- 	wsVideo.click(function(){
+	$("#ws-video").click(function(){
 		showVideo = !showVideo;
 		//the two states
 		if (showVideo === false) {
@@ -53,15 +50,10 @@ if (!document.getElementById("Css-WiBla")) {
 			wsVideo.className = "ws-off";
 		}
 	});
-	var wsDelChat = $("#ws-delChat");
-	wsDelChat.click(function(){
-		//bug fixing the fact that when the same user talk, the message won't display
-		API.chatLog("I am a bug fix.");
-		//then delete
-		$("#chat-messages").innerHTML = "";
+	$("#ws-delChat").click(function(){
+		API.chatLog("I am a bug fix."); /*Then*/ $("#chat-messages").innerHTML = "";
 	});
-	var wsCss = $("#ws-css");
-	wsCss.click(function(){
+	$("#ws-css").click(function(){
 		isOn = !isOn;
 		if (isOn) {
 			link.href = min_css;
@@ -71,48 +63,30 @@ if (!document.getElementById("Css-WiBla")) {
 			wsCss.className = "ws-on";
 		}
 	});
-	var wsKill = $("#ws-off");
-	wsKill.click(function(){
-		$(window).unbind();
-		API.stopListening(API.CHAT_COMMAND, chatCommand);
-		if (showVideo === false) {
-			hideStream();
-			setTimeout(WiBla_Script_Shutdown,500);
-		}
-		var parent = $("#app");
-		parent.removeChild(box);
-		parent.removeChild(settings);
-		head.removeChild(css);
-		if  (API.hasPermission(null, API.ROLE.BOUNCER) || (isDev)) {
-			playback.removeChild(ws_rmvDJ);
-			playback.removeChild(wsSkip);
-		}
+	$("#ws-off").click(function(){
+		WiBla_Script_Shutdown();
 	});
-	var wsBG = $("#ws-bg");
-	wsBG.click(function(){
-		var bg = prompt("Image URL:");
-		if (bg !== null) {
-			fond.setAttribute("style", "left: -12.5px; top: 54px; width: 1600px; height: 900px; background: url(" + bg + ");");
-		}
-		
+	$("#ws-bg").click(function(){
+		askBG();
 	});
-	var wsLengthA = $("#ws-lengthA");
-	wsLengthA.click(function(){
+	$("#ws-lengthA").click(function(){
 		durationAlert = !durationAlert;
 		alertDuration();
 	});
-	//video buttons
-	var ws_rmvDJ = $("#ws-rmvDJ");
-	var wsSkip = $("#wsSkip");
-	//plug
-	var body = $("body");
-	var playbackContainer = $("#playback-container");
-	var playback = $("#playback");
-	var fond = $(".room-background");
-	fond.setAttribute("style", "left: -12.5px; top: 54px; width: 1600px; height: 900px; background: url(https://dl.dropboxusercontent.com/s/phkx1zigwkc66vg/FEDMC.jpg)");
-}
 
-var json = {
+	//Script content
+	var box = $("#Box"),
+	settings = $("#Settings"),
+	css = $("#WiBla-CSS"),
+	//video buttons
+	ws_rmvDJ = $("#ws-rmvDJ"),
+	wsSkip = $("#wsSkip"),
+	//plug
+	body = $("body"),
+	playbackContainer = $("#playback-container"),
+	playback = $("#playback"),
+	fond = $(".room-background"),
+	json = {
 	"V": "Alpha 7",
 	"show": false,
 	"autoW": false,
@@ -121,35 +95,41 @@ var json = {
 	"isOn": false,
 	"durationAlert": false,
 	"afk": false,
-};
+	};
+	var show, autoW, autoDj, showVideo, isOn, durationAlert, notif, afk;
+	show = autoW = autoDj = isOn = durationAlert = afk = false;
+	showVideo = true;
+	notif = new Audio("https://raw.githubusercontent.com/WiBla/Script/alpha/ressources/notif.wav");
+	//getting user info to make alpha and beta tester privilege
+	var pseudo = API.getUser().rawun;
+	var ID = API.getUser().id;
 
-var show, autoW, autoDj, showVideo, isOn, durationAlert, notif, afk;
-show = autoW = autoDj = isOn = durationAlert = afk = false;
-showVideo = true;
-notif = new Audio("https://raw.githubusercontent.com/WiBla/Script/alpha/ressources/notif.wav");
-//getting user info to make alpha and beta tester privilege
-var pseudo = API.getUser().rawun;
-var ID = API.getUser().id;
+	API.on(API.CHAT_COMMAND, chatCommand);
+	API.on(API.ADVANCE, alertDuration);
+	API.on(API.ADVANCE, autowoot);
+	API.on(API.ADVANCE, autojoin);
 
-API.on(API.CHAT_COMMAND, chatCommand);
-API.on(API.ADVANCE, alertDuration);
-API.on(API.ADVANCE, autowoot);
-API.on(API.ADVANCE, autojoin);
+	$(window).bind("keydown", function(k) {
+		if (k.keyCode == 107 && !$($("#chat-input")).attr("class")) {
+			var volume = API.getVolume();
+			volume += 3;
+			API.setVolume(volume);
+		}
+	});
+	$(window).bind("keydown", function(k) {
+		if (k.keyCode == 109 && !$($("#chat-input")).attr("class")) {
+			var volume = API.getVolume();
+			volume -= 3;
+			API.setVolume(volume);
+		}
+	});
 
-$(window).bind("keydown", function (k) {
-	if (k.keyCode == 107 && !$($("#chat-input")).attr("class")) {
-		var volume = API.getVolume();
-		volume += 3;
-		API.setVolume(volume);
+	API.chatLog("WiBla Script " + json.V + " !");
+	API.chatLog("Type /list for commands list.");
+	if (!isDev) {
+		API.chatLog("If you see some bugs, try the official version http://wibla.free.fr !");
 	}
-});
-$(window).bind("keydown", function (k) {
-	if (k.keyCode == 109 && !$($("#chat-input")).attr("class")) {
-		var volume = API.getVolume();
-		volume -= 3;
-		API.setVolume(volume);
-	}
-});
+}
 
 //Functions
 function autowoot() {
@@ -184,14 +164,12 @@ function autojoin() {
 		wsJoin.className = "ws-off";
 	}
 }
-function chatCommand (commande) {
+function chatCommand(commande) {
 	var args = commande.split(" ");
 	switch (args[0]) {
-			
 		case "/like":
 			API.sendChat(":heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes:");
 			break;
-		
 		case "/love":
 			if (args[1] === undefined) {
 				API.sendChat(":heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
@@ -199,7 +177,6 @@ function chatCommand (commande) {
 				API.sendChat(args[1] + " :heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
 			}
 			break;
-			
 		case "/eta":
 			if (API.getWaitListPosition() == -1) {
 				API.chatLog("Vous n'êtes pas dans la liste d'attente.");
@@ -220,7 +197,6 @@ function chatCommand (commande) {
 				}
 			}
 			break;
-		
 		case "/vol":
 			if (args[1] >= 0 && args[1] <= 100) {
 				API.setVolume(args[1]);
@@ -228,7 +204,6 @@ function chatCommand (commande) {
 				API.chatLog("Spécifier un chiffre entre 0 et 100");
 			}
 			break;
-			
 		case "/afk":
 			afk = !afk;
 			if (afk) {
@@ -237,7 +212,6 @@ function chatCommand (commande) {
 				API.sendChat("/me n'est plus AFK.");
 			}
 			break;
-			
 		case "/list":
 			API.chatLog("/like <3 x 5");
 			API.chatLog("/love [@user] <3 x 10 + user(optionel)");
@@ -246,7 +220,6 @@ function chatCommand (commande) {
 			API.chatLog("/afk envoie un message d'afk (à faire deux fois)");
 			API.chatLog("/list affiche cette liste");
 			break;
-				
 		default:
 			API.chatLog("Essayez /list");
 	}
@@ -275,10 +248,36 @@ function slide() {
 		settings.style.right = "345px";
 	}
 }
+function askBG() {
+	var bg = prompt("Image URL:"),
+		firstRun = true;
+	if (bg !== null) {
+		var style = fond[0].getAttribute("style").split(" ");
+		style[9] = "url(" + bg +")";
+		style = style.join(" ");
+		fond[0].setAttribute("style", style);
+	} else if(firstRun) {
+		bg = "https://rawgit.com/WiBla/Script/alpha/images/background/default/FEDMC.jpg";
+		firstRun = false;
+		askBG();
+	}
+}
 function removeDJ() {
 	API.chatLog("This button will kick of the DJ from the wait-list, but doesn't work atm");
 }
-
-API.chatLog("WiBla Script " + json.V + " !");
-API.chatLog("Type /list for commands list.");
-API.chatLog("If you see some bugs, try the official version http://wibla.free.fr !");
+function WiBla_Script_Shutdown() {
+	$(window).unbind();
+	API.stopListening(API.CHAT_COMMAND, chatCommand);
+	if (showVideo === false) {
+		hideStream();
+		setTimeout(WiBla_Script_Shutdown,500);
+	}
+	var parent = $("#app");
+	parent.removeChild(box);
+	parent.removeChild(settings);
+	head.removeChild(css);
+	if  (API.hasPermission(null, API.ROLE.BOUNCER) || (isDev)) {
+		playback.removeChild(ws_rmvDJ);
+		playback.removeChild(wsSkip);
+	}
+}
