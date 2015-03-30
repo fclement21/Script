@@ -39,21 +39,21 @@ if (!document.getElementById("Css-WiBla")) {
 		showVideo = !showVideo;
 		//the two states
 		if (showVideo === false) {
-			playbackContainer.style.visibility = "hidden";
-			playbackContainer.style.height = "0";
-			ws_rmvDJ.style.top = wsSkip.style.top = "0";
-			$("#playback-controls").style.visibility = "hidden";
-			wsVideo.className = "ws-on";
+			playbackContainer[0].style.visibility = "hidden";
+			playbackContainer[0].style.height = "0";
+			ws_rmvDJ[0].style.top = wsSkip[0].style.top = "0";
+			$("#playback-controls")[0].style.visibility = "hidden";
+			wsVideo[0].className = "ws-on";
 		} else if (showVideo === true) {
-			playbackContainer.style.visibility = "visible";
-			playbackContainer.style.height = "281px";
-			ws_rmvDJ.style.top = wsSkip.style.top = "283px";
-			$("#playback-controls").style.visibility = "visible";
-			wsVideo.className = "ws-off";
+			playbackContainer[0].style.visibility = "visible";
+			playbackContainer[0].style.height = "281px";
+			ws_rmvDJ[0].style.top = wsSkip[0].style.top = "283px";
+			$("#playback-controls")[0].style.visibility = "visible";
+			wsVideo[0].className = "ws-off";
 		}
 	});
 	$("#ws-delChat").click(function(){
-		API.chatLog("I am a bug fix."); /*Then*/ $("#chat-messages").innerHTML = "";
+		API.chatLog("I am a bug fix."); /*Then*/ $("#chat-messages")[0].innerHTML = "";
 	});
 	$("#ws-css").click(function(){
 		isOn = !isOn;
@@ -258,10 +258,12 @@ function askBG() {
 		style[9] = "url(" + bg +")";
 		style = style.join(" ");
 		fond[0].setAttribute("style", style);
-	} else if(firstRun) {
+	} else {
 		bg = "https://rawgit.com/WiBla/Script/alpha/images/background/default/FEDMC.jpg";
-		firstRun = false;
-		askBG();
+		var style = fond[0].getAttribute("style").split(" ");
+		style[9] = "url(" + bg +")";
+		style = style.join(" ");
+		fond[0].setAttribute("style", style);
 	}
 }
 function removeDJ() {
