@@ -10,7 +10,7 @@ if (!document.getElementById("Css-WiBla")) {
 	$("head").after(Css);
 	var Box = $("<div id='Box' onclick='slide()'><div id='icon'></div></div>");
 	$("#app-menu").after(Box);
-	var Settings = $("<div id='Settings'><ul><li id='ws-woot'>Auto-woot</li><li id='ws-join'>Auto-join</li><li id='ws-video'>Hide video</li><li id='ws-delChat'>Clear Chat</li><li id='ws-css'>Custom Style</li><li id='ws-off'>Shutdown</li><li id='ws-bg'>Custom Bg</li><li id='ws-lengthA'>Duration alert</li><li id='ws-V'>Alpha 6.2</li><ul></div>");
+	var Settings = $("<div id='Settings'><ul><li id='ws-woot'>Auto-woot</li><li id='ws-join'>Auto-join</li><li id='ws-video'>Hide video</li><li id='ws-delChat'>Clear Chat</li><li id='ws-css'>Custom Style</li><li id='ws-off'>Shutdown</li><li id='ws-bg'>Custom Bg</li><li id='ws-lengthA'>Duration alert</li><li id='ws-V'>Alpha 6.7</li><ul></div>");
 	$("#app-menu").after(Settings);
 	//buttons below the video must appear ONLY if the user is at least bouncer or Dev
 	var WiBla = API.getUser().id == 4613422,
@@ -89,7 +89,7 @@ if (!document.getElementById("Css-WiBla")) {
 	playback = $("#playback"),
 	fond = $(".room-background"),
 	json = {
-	"V": "Alpha 7",
+	"V": "Alpha github 1",
 	"show": false,
 	"autoW": false,
 	"autoDJ": false,
