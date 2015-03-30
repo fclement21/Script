@@ -1,0 +1,23 @@
+/*older chat*/
+.badge-box {
+	opacity: 0;
+	width:0; height:0;
+	margin: 0 !important;
+}
+.msg {
+	padding: 5px !important;
+	min-height: 0 !important;
+}
+.msg .from {
+	display: inline !important;
+}
+.msg .text {
+	display: inline !important;
+	padding-left: 5px !important;
+}
+.delete-button {
+	padding: 0 !important;
+}
+#chat .emote, #chat .mention, #chat .message, #chat .moderation, #chat .skip, #chat .system, #chat .update, #chat .welcome {
+	min-height: 0px !important;
+}

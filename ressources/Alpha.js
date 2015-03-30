@@ -1,4 +1,4 @@
-// For any informations, go to:
+﻿// For any informations, go to:
 // https://github.com/WiBla/Script
 
 var max_css = "https://rawgit.com/WiBla/Script/alpha/ressources/max.css",
@@ -25,11 +25,13 @@ if (!document.getElementById("Css-WiBla")) {
 	}
 	
 	//menu buttons
-	$("#ws-woot").click(function(){
+	var wsWoot = $("#ws-woot");
+	wsWoot.click(function(){
 		autoW = !autoW;
 		autowoot();
 	});
-	$("#ws-join").click(function(){
+	var wsJoin = $("#ws-join");
+	wsJoin.click(function(){
 		autoDj = !autoDj;
 		autojoin();
 	});
@@ -239,13 +241,13 @@ function slide() {
 	show = !show;
 	//the two states
 	if (show === false) {
-		settings.style.visibility = "hidden";
-		settings.style.zIndex = "0";
-		settings.style.right = "200px";
+		settings[0].style.visibility = "hidden";
+		settings[0].style.zIndex = "0";
+		settings[0].style.right = "200px";
 	} else if (show === true) {
-		settings.style.visibility = "visible";
-		settings.style.zIndex = "2";
-		settings.style.right = "345px";
+		settings[0].style.visibility = "visible";
+		settings[0].style.zIndex = "2";
+		settings[0].style.right = "345px";
 	}
 }
 function askBG() {

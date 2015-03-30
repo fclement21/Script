@@ -134,7 +134,7 @@
 	min-height: 10px !important;
 }
 #chat .rs-log-user-leave, #chat .rs-log-red, #chat .rs-log-green, #chat .rs-log-green, #chat .rs-log-user-meh {
-	border-width: 0 !important;
+	border-left-width: 0 !important;
 }
 #chat .rsshit .msg {
 	padding: 5px 8px 6px 10px;
