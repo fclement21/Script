@@ -35,7 +35,8 @@ if (!document.getElementById("Css-WiBla")) {
 		autoDj = !autoDj;
 		autojoin();
 	});
-	$("#ws-video").click(function(){
+	var wsVideo = $("#ws-video");
+	wsVideo.click(function(){
 		showVideo = !showVideo;
 		//the two states
 		if (showVideo === false) {
@@ -55,14 +56,15 @@ if (!document.getElementById("Css-WiBla")) {
 	$("#ws-delChat").click(function(){
 		API.chatLog("I am a bug fix."); /*Then*/ $("#chat-messages")[0].innerHTML = "";
 	});
-	$("#ws-css").click(function(){
+	var wsCss = $("#ws-css");
+	wsCss.click(function(){
 		isOn = !isOn;
 		if (isOn) {
 			link.href = min_css;
-			wsCss.className = "ws-off";
+			wsCss[0].className = "ws-off";
 		} else {
 			link.href = max_css;
-			wsCss.className = "ws-on";
+			wsCss[0].className = "ws-on";
 		}
 	});
 	$("#ws-off").click(function(){
@@ -71,7 +73,8 @@ if (!document.getElementById("Css-WiBla")) {
 	$("#ws-bg").click(function(){
 		askBG();
 	});
-	$("#ws-lengthA").click(function(){
+	var wsLengthA = $("#ws-lengthA");
+	wsLengthA.click(function(){
 		durationAlert = !durationAlert;
 		alertDuration();
 	});
@@ -145,7 +148,7 @@ function autowoot() {
 function autojoin() {
 	var dj = API.getDJ();
 	if (autoDj) {
-		wsJoin.className = "ws-on";
+		wsJoin[0].className = "ws-on";
 		if (dj === null || dj.id !== API.getUser().id || API.getWaitListPosition() > -1) {
 			switch (API.djJoin()) {
 				case 1:
@@ -163,7 +166,7 @@ function autojoin() {
 			}
 		}
 	} else {
-		wsJoin.className = "ws-off";
+		wsJoin[0].className = "ws-off";
 	}
 }
 function chatCommand(commande) {
@@ -228,13 +231,13 @@ function chatCommand(commande) {
 }
 function alertDuration() {
 	if (durationAlert) {
-		wsLengthA.className = "ws-on";
+		wsLengthA[0].className = "ws-on";
 		if (API.getMediaLength().totalseconds > 435) {
 			notif.play();
 			API.chatLog("Music is too long ! 7:15 max !");
 		}
 	} else {
-		wsLengthA.className = "ws-off";
+		wsLengthA[0].className = "ws-off";
 	}
 }
 function slide() {
