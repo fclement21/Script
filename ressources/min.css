@@ -28,7 +28,7 @@
 	z-index: 2;
 	font-family: arial;
 	visibility: hidden;
-	background: linear-gradient(#111, #111517);
+	background: linear-gradient(to left, #0a0a0a, #111)
 	border: 2px solid #eee;
 	border-right: 0; border-top: 0;
 	border-radius: 0 0 0 15px;
@@ -78,9 +78,6 @@
 }
 
 /*placement du menu*/
-#rs-skip-button {
-	display: none;
-}
 #history-button {
 	right: 54px !important;
 }
@@ -89,18 +86,21 @@
 }
 
 /* Création du bouton Skip */
+#rs-skip-button {
+	display: none;
+}
 #ws-rmvDJ {
 	left: -9px;
 	width: 253px;
 	border-radius: 0 0 0 10px;
 }
-#wsSkip {
+#ws-skip {
 	left: 248px;
 	width: 247px;
 	border-radius: 0 0 10px 0;
 	border-left: none !important;
 }
-#ws-rmvDJ, #wsSkip {
+#ws-rmvDJ, #ws-skip {
 	position: absolute;
 	top: 283px;
 	height: 34px;
@@ -114,10 +114,10 @@
 	transition: all 0.25s;
 	z-index: 4;
 }
-#ws-rmvDJ:hover, #wsSkip:hover {
+#ws-rmvDJ:hover, #ws-skip:hover {
 	background: linear-gradient(to right, rgba(58,63,74,0.7), rgba(42,47,58,0.7)), linear-gradient(to bottom, #555, #222);
 }
-#ws-rmvDJ img, #wsSkip img {
+#ws-rmvDJ img, #ws-skip img {
 	position: relative;
 	left: 110px;
 	top: 4px;

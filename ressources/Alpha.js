@@ -1,119 +1,109 @@
-﻿// For any informations, go to:
-// https://github.com/WiBla/Script
+﻿// For any informations, go to: https://github.com/WiBla/Script
 
-var max_css = "https://rawgit.com/WiBla/Script/alpha/ressources/max.css",
-		min_css = "https://rawgit.com/WiBla/Script/alpha/ressources/min.css";
-
-if (!document.getElementById("Css-WiBla")) {
-	//creating the necessary element
-	var Css = $("<link id='WiBla-CSS' rel='stylesheet' type='text/css' href='"+max_css+"'>");
-	$("head").after(Css);
-	var Box = $("<div id='Box' onclick='slide()'><div id='icon'></div></div>");
-	$("#app-menu").after(Box);
-	var Settings = $("<div id='Settings'><ul><li id='ws-woot'>Auto-woot</li><li id='ws-join'>Auto-join</li><li id='ws-video'>Hide video</li><li id='ws-delChat'>Clear Chat</li><li id='ws-css'>Custom Style</li><li id='ws-off'>Shutdown</li><li id='ws-bg'>Custom Bg</li><li id='ws-lengthA'>Duration alert</li><li id='ws-V'>Alpha 6.7</li><ul></div>");
-	$("#app-menu").after(Settings);
-	//buttons below the video must appear ONLY if the user is at least bouncer or Dev
+if($("#WiBla-CSS").length === 0) {
+	/* ####### [Global variables] ####### */
 	var WiBla = API.getUser().id == 4613422,
-		zurbo = API.getUser().id==4506088,
-		dano = API.getUser().id == 209178,
-		isDev = WiBla || zurbo || dano,
-		hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev;
-	//the result
-	if (hasPermBouncer) {
-		var Controls = $("<div id='ws-rmvDJ'><img src='https://dl.dropboxusercontent.com/s/ou587hh6d0ov90w/romveDJ.png' alt='button remove from wait-list' /></div><div id='wsSkip' onclick='API.moderateForceSkip();'><img src='https://dl.dropboxusercontent.com/s/0fn3plmg2yhy6rf/skip.png' alt='button skip'/></div>");
-		$("#playback-container").after(Controls);
-	}
-	
-	//menu buttons
-	var wsWoot = $("#ws-woot");
-	wsWoot.click(function(){
-		autoW = !autoW;
-		autowoot();
-	});
-	var wsJoin = $("#ws-join");
-	wsJoin.click(function(){
-		autoDj = !autoDj;
-		autojoin();
-	});
-	var wsVideo = $("#ws-video");
-	wsVideo.click(function(){
-		showVideo = !showVideo;
-		//the two states
-		if (showVideo === false) {
-			playbackContainer[0].style.visibility = "hidden";
-			playbackContainer[0].style.height = "0";
-			ws_rmvDJ[0].style.top = wsSkip[0].style.top = "0";
-			$("#playback-controls")[0].style.visibility = "hidden";
-			wsVideo[0].className = "ws-on";
-		} else if (showVideo === true) {
-			playbackContainer[0].style.visibility = "visible";
-			playbackContainer[0].style.height = "281px";
-			ws_rmvDJ[0].style.top = wsSkip[0].style.top = "283px";
-			$("#playback-controls")[0].style.visibility = "visible";
-			wsVideo[0].className = "ws-off";
-		}
-	});
-	$("#ws-delChat").click(function(){
-		API.chatLog("I am a bug fix."); /*Then*/ $("#chat-messages")[0].innerHTML = "";
-	});
-	var wsCss = $("#ws-css");
-	wsCss.click(function(){
-		isOn = !isOn;
-		if (isOn) {
-			link.href = min_css;
-			wsCss[0].className = "ws-off";
-		} else {
-			link.href = max_css;
-			wsCss[0].className = "ws-on";
-		}
-	});
-	$("#ws-off").click(function(){
-		WiBla_Script_Shutdown();
-	});
-	$("#ws-bg").click(function(){
-		askBG();
-	});
-	var wsLengthA = $("#ws-lengthA");
-	wsLengthA.click(function(){
-		durationAlert = !durationAlert;
-		alertDuration();
-	});
-
-	//Script content
-	var box = $("#Box"),
-	settings = $("#Settings"),
-	css = $("#WiBla-CSS"),
-	//video buttons
-	ws_rmvDJ = $("#ws-rmvDJ"),
-	wsSkip = $("#wsSkip"),
-	//plug
-	body = $("body"),
-	playbackContainer = $("#playback-container"),
-	playback = $("#playback"),
-	fond = $(".room-background"),
+	zurbo = API.getUser().id == 4506088,
+	dano = API.getUser().id == 209178,
+	isDev = WiBla || zurbo || dano,
+	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	json = {
-	"V": "Alpha github 1",
-	"show": false,
+	"V": "Alpha 6.7(GH)",
+	"showMenu": false,
 	"autoW": false,
 	"autoDJ": false,
 	"showVideo": true,
-	"isOn": false,
+	"CSS": false,
+	"oldChat": true,
 	"durationAlert": false,
-	"afk": false,
+	"afk": false
 	};
-	var show, autoW, autoDj, showVideo, isOn, durationAlert, notif, afk;
-	show = autoW = autoDj = isOn = durationAlert = afk = false;
-	showVideo = true;
-	notif = new Audio("https://raw.githubusercontent.com/WiBla/Script/alpha/ressources/notif.wav");
-	//getting user info to make alpha and beta tester privilege
-	var pseudo = API.getUser().rawun;
+	
+	// Alpha & Beta tester privilege
+	var pseudo = API.getUser().username;
 	var ID = API.getUser().id;
 
-	API.on(API.CHAT_COMMAND, chatCommand);
-	API.on(API.ADVANCE, alertDuration);
-	API.on(API.ADVANCE, autowoot);
-	API.on(API.ADVANCE, autojoin);
+	//Running the specified version
+	init("alpha");
+}
 
+/* #################### [Functions] #################### */
+function init(version) {
+	// Creating core elements
+	var oldChat, max_css, min_css, notif;
+	if (version == "alpha") {
+		oldChat ="https://rawgit.com/WiBla/Script/alpha/ressources/old-chat.css";
+		max_css = "https://rawgit.com/WiBla/Script/alpha/ressources/max.css";
+		min_css = "https://rawgit.com/WiBla/Script/alpha/ressources/min.css";
+		notif = new Audio("https://raw.githubusercontent.com/WiBla/Script/alpha/ressources/notif.wav");
+	} else {
+		oldChat ="https://rawgit.com/WiBla/Script/master/ressources/old-chat.css";
+		max_css = "https://rawgit.com/WiBla/Script/master/ressources/max.css";
+		min_css = "https://rawgit.com/WiBla/Script/master/ressources/min.css";
+		notif = new Audio("https://raw.githubusercontent.com/WiBla/Script/master/ressources/notif.wav");
+	}
+	var menu = "", moderateGUI = "";
+		menu += '<div id="Settings">';
+		menu += '	<ul>';
+		menu += '		<li id="ws-woot">Auto-woot</li>';
+		menu += '		<li id="ws-join">Auto-join</li>';
+		menu += '		<li id="ws-video">Hide video</li>';
+		menu += '		<li id="ws-delChat">Clear Chat</li>';
+		menu += '		<li id="ws-css">Custom Style</li>';
+		menu += '		<li id="ws-old-chat">Old chat</li>';
+		menu += '		<li id="ws-bg">Custom Bg</li>';
+		menu += '		<li id="ws-lengthA">Song limit</li>';
+		menu += '		<li id="ws-off">Shutdown</li>';
+		menu += '		<li id="ws-V">'+ json.V +'</li>';
+		menu += '	</ul>';
+		menu += '</div>';
+		moderateGUI += '<div id="ws-rmvDJ">';
+		moderateGUI += '	<img src="https://dl.dropboxusercontent.com/s/ou587hh6d0ov90w/romveDJ.png" alt="button remove from wait-list" />';
+		moderateGUI += '</div>';
+		moderateGUI += '<div id="ws-skip" onclick="API.moderateForceSkip();">';
+		moderateGUI += '	<img src="https://dl.dropboxusercontent.com/s/0fn3plmg2yhy6rf/skip.png" alt="button skip" />';
+		moderateGUI += '</div>';
+
+	// Displaying them
+	var a = $("<link id='WiBla-CSS' rel='stylesheet' type='text/css' href='"+min_css+"'>");
+	$("head").append(a);// General css
+	var b = $("<link id='WiBla-Old-Chat-CSS' rel='stylesheet' type='text/css' href='"+oldChat+"'>");
+	$("head").append(b);// Old chat css
+	var c = $("<div id='Box' onclick='slide()'><div id='icon'></div></div>");
+	$("#app").append(c);// Menu icon
+	var d = $(menu);
+	$("#app").append(d);// Menu itself
+	// If at least bouncer (or developer)
+	if (hasPermBouncer) {
+		var e = $(moderateGUI);
+		$("#playback-container").after(e);// Moderation tools
+	}
+	// Element that only are available after the script has loaded
+	window.item = {
+		//script
+		"box": $("#box")[0],
+		"settings": $("#Settings")[0],
+		"skip": $("#ws-Skip")[0],
+		"rmvDJ": $("#ws-rmvDJ")[0],
+		//script menu
+		"woot": $("#ws-woot")[0],
+		"join": $("ws-join")[0],
+		"video": $("ws-video")[0],
+		"delchat": $("ws-delChat")[0],
+		"css": $("ws-css")[0],
+		"oldChat": $("ws-old-chat")[0],
+		"bg": $("ws-bg")[0],
+		"lengthA": $("ws-lengthA")[0],
+		"off": $("ws-off")[0],
+		//plug in general
+		"stream": $("#playback-container")[0],
+		"head": $("head")[0],
+	};
+
+	firstRun();
+}
+function firstRun() {
+	// Keyboard shorcuts
 	$(window).bind("keydown", function(k) {
 		if (k.keyCode == 107 && !$($("#chat-input")).attr("class")) {
 			var volume = API.getVolume();
@@ -128,46 +118,161 @@ if (!document.getElementById("Css-WiBla")) {
 			API.setVolume(volume);
 		}
 	});
-
-	API.chatLog("WiBla Script " + json.V + " !");
+	/* Event listener for buttons
+	item.woot.click(function(){
+		json.autoW = !json.autoW;
+		autowoot();
+	});
+	item.join.click(function(){
+		json.autoDJ = !json.autoDJ;
+		autojoin();
+	});
+	item.video.click(function(){
+		json.showVideo = !json.showVideo;
+		hideStream();
+	});
+	item.delchat.click(function(){
+		/*If the same user speak before and after the clear, message won't display*/
+		/*API.chatLog("I am a bug fix."); // <-- This fix it
+		$("#chat-messages")[0].innerHTML = "";
+	});
+	item.lengthA.click(function(){
+		/*
+		// init and alert must be two separate functions
+		if (default) {
+			var time[0] = 435;
+		} else {
+			// improvments may be done looking for minutes only
+			var time = prompt("Song limit in minutes\nexemple: 64,30 is 1h4min30s\n(minimum is 1min)");
+			time = time.split(",");
+			time[0] = time[0]*60;
+			time[0] = parseInt(time[0]) + parseInt(time[1]);
+		}
+	});*/
+	// 
+	autowoot();
+	autojoin();
+	askBG(true);
+	alertDuration(true);
+	// 
+	API.on(API.CHAT_COMMAND, chatCommand);
+	API.on(API.ADVANCE, alertDuration);
+	API.on(API.ADVANCE, autowoot);
+	API.on(API.ADVANCE, autojoin);
+	// Fully loaded "alert"
+	API.chatLog("WiBla Script " + json.V + " loaded !");
 	API.chatLog("Type /list for commands list.");
-	if (!isDev) {
-		API.chatLog("If you see some bugs, try the official version http://wibla.free.fr !");
-	}
+	API.chatLog("If you see some bugs, try the official version http://wibla.free.fr !");
 }
-
-//Functions
 function autowoot() {
-	if (autoW === true) {
-		$("#woot").click();
-		wsWoot.className = "ws-on";
+	if (json.autoW === true) {
+		$("#woot")[0].click();
+		item.woot.className = "ws-on";
 	} else {
-		wsWoot.className = "ws-off";
+		item.woot.className = "ws-off";
 	}
 }
 function autojoin() {
 	var dj = API.getDJ();
-	if (autoDj) {
-		wsJoin[0].className = "ws-on";
+	if (json.autoDj) {
+		item.join.className = "ws-on";
 		if (dj === null || dj.id !== API.getUser().id || API.getWaitListPosition() > -1) {
 			switch (API.djJoin()) {
 				case 1:
 					API.chatLog("Cannot auto-join: Wait list is locked");
 					break;
-				
 				case 2:
 					API.chatLog("Cannot auto-join: Invalid active playlist");
 					break;
-				
 				case 3:
 					API.chatLog("Cannot auto-join: Wait List is full");
 					break;
-				
 			}
 		}
 	} else {
-		wsJoin[0].className = "ws-off";
+		item.join.className = "ws-off";
 	}
+}
+function hideStream() {
+	if (json.showVideo) {
+		item.stream.style.visibility = "visible";
+		item.stream.style.height = "281px";
+		ws_rmvDJ[0].style.top = wsSkip[0].style.top = "283px";
+		$("#playback-controls")[0].style.visibility = "visible";
+		item.video.className = "ws-off";
+	} else {
+		item.stream.style.visibility = "hidden";
+		item.stream.style.height = "0";
+		ws_rmvDJ[0].style.top = wsSkip[0].style.top = "0";
+		$("#playback-controls")[0].style.visibility = "hidden";
+		item.video.className = "ws-on";
+	}
+}
+function askBG(base) {
+	var bg;
+	if (base) {
+		bg = "https://rawgit.com/WiBla/Script/alpha/images/background/default/FEDMC.jpg";
+	} else {
+		bg = prompt("Image URL:");
+	}
+	if (bg !== null && bg.length > 0) {
+		var style = $(".room-background")[0].getAttribute("style").split(" ");
+		style[9] = "url(" + bg +")";
+		style = style.join(" ");
+		$(".room-background")[0].setAttribute("style", style);
+		item.bg.className = "ws-on";
+	} else {
+
+	}
+}
+function alertDuration(base) {
+	if (durationAlert) {
+		item.lengthA.className = "ws-on";
+		if (API.getMedia().duration > time[0]) {
+			notif.play();
+			API.chatLog("Music is too long ! 7:15 max !");
+		}
+	} else {
+		item.lengthA.className = "ws-off";
+	}
+}
+
+// TO VERIFY
+function WiBla_Script_Shutdown() {
+	API.stopListening(API.CHAT_COMMAND, chatCommand);
+	API.stopListening(API.ADVANCE, alertDuration);
+	API.stopListening(API.ADVANCE, autowoot);
+	API.stopListening(API.ADVANCE, autojoin);
+	$(window).unbind();
+	// Preventing making the video definitly desapear
+	if (showVideo === false) {
+		hideStream();
+		setTimeout(WiBla_Script_Shutdown,250);
+	}
+	var parent = $("#app")[0];
+	parent.removeChild(box);
+	parent.removeChild(settings);
+	item.head.removeChild(css);
+	if (hasPermBouncer) {
+		item.stream.removeChild(ws_rmvDJ);
+		item.stream.removeChild(wsSkip);
+	}
+}
+function slide() {
+	var show = json.showMenu = !json.showMenu,
+		menu = $("#Settings")[0];
+	if (show === false) {
+		menu.style.visibility = "hidden";
+		menu.style.zIndex = "0";
+		menu.style.right = "200px";
+	} else if (show === true) {
+		menu.style.visibility = "visible";
+		menu.style.zIndex = "2";
+		menu.style.right = "345px";
+	}
+}
+function removeDJ() {
+	API.chatLog("This button will kick of the DJ from the wait-list, but doesn't work atm");
 }
 function chatCommand(commande) {
 	var args = commande.split(" ");
@@ -183,9 +288,11 @@ function chatCommand(commande) {
 			}
 			break;
 		case "/eta":
-			if (API.getWaitListPosition() == -1) {
-				API.chatLog("Vous n'êtes pas dans la liste d'attente.");
-			} else {
+			if (API.getUser().id == API.getDJ().id) {
+				API.chatLog("You are the DJ !");
+			} else if (API.getWaitListPosition() == -1) {
+				API.chatLog("You are not in the Wait-List.");
+			}	else {
 				var eta = API.getWaitListPosition() + 1; //index 0
 				eta = eta * 4; //we assume that everyone plays 4mins music
 				eta = eta * 60; //transform in second
@@ -223,68 +330,22 @@ function chatCommand(commande) {
 			API.chatLog("/eta renvois le temps restant avant que vous soyez DJ");
 			API.chatLog("/vol [0-100] change le volume");
 			API.chatLog("/afk envoie un message d'afk (à faire deux fois)");
+			API.chatLog("/whoami affiche vos infos");
 			API.chatLog("/list affiche cette liste");
+			break;
+		case "/whoami":
+			API.chatLog("Username: " + API.getUser().username);
+			API.chatLog("ID: " + API.getUser().id);
+			API.chatLog("Description: " + API.getUser().blurb);
+			API.chatLog("Avatar: " + API.getUser().avatarID);
+			API.chatLog("Badge: " + API.getUser().badge);
+			API.chatLog("XP: " + API.getUser().xp);
+			API.chatLog("Lvl: " + API.getUser().level);
+			API.chatLog("PP: " + API.getUser().pp);
+			API.chatLog("Purchase: " + API.getUser().payments);
+			API.chatLog("Can gift: " + API.getUser().canGift);
 			break;
 		default:
 			API.chatLog("Essayez /list");
-	}
-}
-function alertDuration() {
-	if (durationAlert) {
-		wsLengthA[0].className = "ws-on";
-		if (API.getMediaLength().totalseconds > 435) {
-			notif.play();
-			API.chatLog("Music is too long ! 7:15 max !");
-		}
-	} else {
-		wsLengthA[0].className = "ws-off";
-	}
-}
-function slide() {
-	show = !show;
-	//the two states
-	if (show === false) {
-		settings[0].style.visibility = "hidden";
-		settings[0].style.zIndex = "0";
-		settings[0].style.right = "200px";
-	} else if (show === true) {
-		settings[0].style.visibility = "visible";
-		settings[0].style.zIndex = "2";
-		settings[0].style.right = "345px";
-	}
-}
-function askBG() {
-	var bg = prompt("Image URL:"),
-		firstRun = true;
-	if (bg !== null) {
-		var style = fond[0].getAttribute("style").split(" ");
-		style[9] = "url(" + bg +")";
-		style = style.join(" ");
-		fond[0].setAttribute("style", style);
-	} else {
-		bg = "https://rawgit.com/WiBla/Script/alpha/images/background/default/FEDMC.jpg";
-		var style = fond[0].getAttribute("style").split(" ");
-		style[9] = "url(" + bg +")";
-		style = style.join(" ");
-		fond[0].setAttribute("style", style);
-	}
-}
-function removeDJ() {
-	API.chatLog("This button will kick of the DJ from the wait-list, but doesn't work atm");
-}
-function WiBla_Script_Shutdown() {
-	$(window).unbind();
-	API.stopListening(API.CHAT_COMMAND, chatCommand);
-	if (showVideo === false) {
-		hideStream();
-		setTimeout(WiBla_Script_Shutdown,500);
-	}
-	var parent = $("#app");
-	parent.removeChild(box);
-	parent.removeChild(settings);
-	head.removeChild(css);
-	if  (API.hasPermission(null, API.ROLE.BOUNCER) || (isDev)) {
-		playback.removeChild(ws_rmvDJ);
-		playback.removeChild(wsSkip);
 	}
 }
