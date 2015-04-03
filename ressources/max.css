@@ -28,7 +28,7 @@
 	z-index: 2;
 	font-family: arial;
 	visibility: hidden;
-	background: linear-gradient(to left, #0a0a0a, #111)
+	background: linear-gradient(to left, #0a0a0a, #111);
 	border: 2px solid #eee;
 	border-right: 0; border-top: 0;
 	border-radius: 0 0 0 15px;
@@ -125,6 +125,23 @@
 #ws-rmvDJ img {
 	top: 7px;
 }
+
+/* Les élements du script */
+.ws-selected {
+    background: radial-gradient(#383,#272);
+}
+#chat-messages .ws-selected .msg .from .un, #chat-messages .ws-selected .msg .timestamp, #chat-messages .ws-selected .msg {
+    color: #EEE !important;
+    text-shadow: 0 0 4px #010;
+}
+#chat-messages .ws-selected .badge-box {
+    background: rgba(0,0,0,0);
+}
+#chat-messages .ws-selected .badge-box i {
+    border-color: #EEE;
+}
+
+/* Le reste */
 #playback-container {
 	border: 2px solid #0bf !important;
 	border-top: 0 !important;
@@ -166,14 +183,14 @@
 	color: #AB48C6;
 }
 .group.bouncer {
-	color: #F3508F;
+	color: #F3508f;
 }
 .group.dj {
 	color: #F7A452;
 }
-#chat .emote:nth-child(2n+1), #chat .log:nth-child(2n+1), #chat .message:nth-child(2n+1), #chat .moderation:nth-child(2n+1), #chat .user-action:nth-child(2n+1), #chat .welcome:nth-child(2n+1) {
+#chat .emote:nth-child(2n+1), #chat .log:nth-child(2n+1), #chat .message:nth-child(2n+1), #chat .moderation:nth-child(2n+1), #chat .user-action:nth-child(2n+1), #chat .welcome:nth-child(2n+1)m video-only-dj, .pop-menu.grab, #footer-user .button.inventory .image, #woot .bottom, #grab .bottom, #meh .bottom, #woot.crowd-response.disabled .bottom, #woot.crowd-response.disabled.active .bottom, #grab.crowd-response.disabled .bottom, #grab.crowd-response.disabled.active .bottom, #meh.crowd-response.disabled .bottom, #meh.crowd-response.disabled.active .bottom {
 	background: #000;
-	background: hsla(0,0%,0%,0);
+	background: rgba(0,0,0,0);
 }
 #playback-controls {
 	left: -7px !important;
@@ -183,9 +200,6 @@
 }
 .background img {
 	display: none;
-}
-#video-only-dj, .pop-menu.grab, #footer-user .button.inventory .image, #woot .bottom, #grab .bottom, #meh .bottom, #woot.crowd-response.disabled .bottom, #woot.crowd-response.disabled.active .bottom, #grab.crowd-response.disabled .bottom, #grab.crowd-response.disabled.active .bottom, #meh.crowd-response.disabled .bottom, #meh.crowd-response.disabled.active .bottom {
-	background: rgba(0,0,0,0) !important;
 }
 .pop-menu.grab .bar {
 	border-radius: 30px 30px 0 0;

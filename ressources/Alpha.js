@@ -8,7 +8,7 @@ if($("#WiBla-CSS").length === 0) {
 	isDev = WiBla || zurbo || dano,
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	json = {
-	"V": "Alpha 6.7(GH)",
+	"V": "Alpha 6.7",
 	"showMenu": false,
 	"autoW": false,
 	"autoDJ": false,
@@ -103,6 +103,17 @@ function init(version) {
 	firstRun();
 }
 function firstRun() {
+	autowoot();
+	autojoin();
+	askBG(true);
+	alertDuration(true);
+	
+	// API initalization
+	API.on(API.CHAT_COMMAND, chatCommand);
+	API.on(API.ADVANCE, alertDuration);
+	API.on(API.ADVANCE, autowoot);
+	API.on(API.ADVANCE, autojoin);
+
 	// Keyboard shorcuts
 	$(window).bind("keydown", function(k) {
 		if (k.keyCode == 107 && !$($("#chat-input")).attr("class")) {
@@ -118,7 +129,8 @@ function firstRun() {
 			API.setVolume(volume);
 		}
 	});
-	/* Event listener for buttons
+
+	// Event listener for buttons
 	item.woot.click(function(){
 		json.autoW = !json.autoW;
 		autowoot();
@@ -133,11 +145,10 @@ function firstRun() {
 	});
 	item.delchat.click(function(){
 		/*If the same user speak before and after the clear, message won't display*/
-		/*API.chatLog("I am a bug fix."); // <-- This fix it
+		API.chatLog("I am a bug fix."); // <-- This fix it
 		$("#chat-messages")[0].innerHTML = "";
 	});
 	item.lengthA.click(function(){
-		/*
 		// init and alert must be two separate functions
 		if (default) {
 			var time[0] = 435;
@@ -148,17 +159,8 @@ function firstRun() {
 			time[0] = time[0]*60;
 			time[0] = parseInt(time[0]) + parseInt(time[1]);
 		}
-	});*/
-	// 
-	autowoot();
-	autojoin();
-	askBG(true);
-	alertDuration(true);
-	// 
-	API.on(API.CHAT_COMMAND, chatCommand);
-	API.on(API.ADVANCE, alertDuration);
-	API.on(API.ADVANCE, autowoot);
-	API.on(API.ADVANCE, autojoin);
+	});
+
 	// Fully loaded "alert"
 	API.chatLog("WiBla Script " + json.V + " loaded !");
 	API.chatLog("Type /list for commands list.");

@@ -28,7 +28,7 @@
 	z-index: 2;
 	font-family: arial;
 	visibility: hidden;
-	background: linear-gradient(to left, #0a0a0a, #111)
+	background: linear-gradient(to left, #0a0a0a, #111);
 	border: 2px solid #eee;
 	border-right: 0; border-top: 0;
 	border-radius: 0 0 0 15px;
@@ -125,6 +125,23 @@
 #ws-rmvDJ img {
 	top: 7px;
 }
+
+/* Les élements du script */
+.ws-selected {
+    background: radial-gradient(#383,#272);
+}
+#chat-messages .ws-selected .msg .from .un, #chat-messages .ws-selected .msg .timestamp, #chat-messages .ws-selected .msg {
+    color: #EEE !important;
+    text-shadow: 0 0 4px #010;
+}
+#chat-messages .ws-selected .badge-box {
+    background: rgba(0,0,0,0);
+}
+#chat-messages .ws-selected .badge-box i {
+    border-color: #EEE;
+}
+
+/* Le reste */
 #playback-container {
 	border: 2px solid #0bf !important;
 	border-top: 0 !important;
