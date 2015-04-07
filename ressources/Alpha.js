@@ -1,4 +1,6 @@
 ﻿// For any informations, go to: https://github.com/WiBla/Script
+API.chatLog("I'm doing some tests on the alpha, if it doesn't work, please use the official version.");
+
 
 if($("#WiBla-CSS").length === 0) {
 	/* ####### [Global variables] ####### */
@@ -16,7 +18,8 @@ if($("#WiBla-CSS").length === 0) {
 	"CSS": false,
 	"oldChat": true,
 	"durationAlert": false,
-	"afk": false
+	"afk": false,
+	"time": 0
 	};
 	
 	// Alpha & Beta tester privilege
@@ -30,14 +33,14 @@ if($("#WiBla-CSS").length === 0) {
 /* #################### [Functions] #################### */
 function init(version) {
 	// Creating core elements
-	var oldChat, max_css, min_css, notif;
+	var old_chat, max_css, min_css, notif;
 	if (version == "alpha") {
-		oldChat ="https://rawgit.com/WiBla/Script/alpha/ressources/old-chat.css";
+		old_chat ="https://rawgit.com/WiBla/Script/alpha/ressources/old-chat.css";
 		max_css = "https://rawgit.com/WiBla/Script/alpha/ressources/max.css";
 		min_css = "https://rawgit.com/WiBla/Script/alpha/ressources/min.css";
 		notif = new Audio("https://raw.githubusercontent.com/WiBla/Script/alpha/ressources/notif.wav");
 	} else {
-		oldChat ="https://rawgit.com/WiBla/Script/master/ressources/old-chat.css";
+		old_chat ="https://rawgit.com/WiBla/Script/master/ressources/old-chat.css";
 		max_css = "https://rawgit.com/WiBla/Script/master/ressources/max.css";
 		min_css = "https://rawgit.com/WiBla/Script/master/ressources/min.css";
 		notif = new Audio("https://raw.githubusercontent.com/WiBla/Script/master/ressources/notif.wav");
@@ -45,15 +48,15 @@ function init(version) {
 	var menu = "", moderateGUI = "";
 		menu += '<div id="Settings">';
 		menu += '	<ul>';
-		menu += '		<li id="ws-woot">Auto-woot</li>';
-		menu += '		<li id="ws-join">Auto-join</li>';
-		menu += '		<li id="ws-video">Hide video</li>';
-		menu += '		<li id="ws-delChat">Clear Chat</li>';
-		menu += '		<li id="ws-css">Custom Style</li>';
-		menu += '		<li id="ws-old-chat">Old chat</li>';
-		menu += '		<li id="ws-bg">Custom Bg</li>';
-		menu += '		<li id="ws-lengthA">Song limit</li>';
-		menu += '		<li id="ws-off">Shutdown</li>';
+		menu += '		<li id="ws-woot" onclick="json.autoW = !json.autoW;autowoot();">Auto-woot</li>';
+		menu += '		<li id="ws-join" onclick="json.autoDJ = !json.autoDJ;autojoin();">Auto-join</li>';
+		menu += '		<li id="ws-video" onclick="json.showVideo = !json.showVideo;hideStream();">Hide video</li>';
+		menu += '		<li id="ws-css" onclick="style();">Custom Style</li>';
+		menu += '		<li id="ws-old-chat" onclick="oldChat();">Old chat</li>';
+		menu += '		<li id="ws-bg" onclick="askBG();">Custom Bg</li>';
+		menu += '		<li id="ws-lengthA" onclick="json.alertDuration = !json.alertDuratio;initAlertDuration();">Song limit</li>';
+		menu += '		<li id="ws-mutemeh" onclick="">Mute on meh</li>'
+		menu += '		<li id="ws-off" onclick="WiBla_Script_Shutdown();">Shutdown</li>';
 		menu += '		<li id="ws-V">'+ json.V +'</li>';
 		menu += '	</ul>';
 		menu += '</div>';
@@ -67,7 +70,7 @@ function init(version) {
 	// Displaying them
 	var a = $("<link id='WiBla-CSS' rel='stylesheet' type='text/css' href='"+min_css+"'>");
 	$("head").append(a);// General css
-	var b = $("<link id='WiBla-Old-Chat-CSS' rel='stylesheet' type='text/css' href='"+oldChat+"'>");
+	var b = $("<link id='WiBla-Old-Chat-CSS' rel='stylesheet' type='text/css' href='"+old_chat+"'>");
 	$("head").append(b);// Old chat css
 	var c = $("<div id='Box' onclick='slide()'><div id='icon'></div></div>");
 	$("#app").append(c);// Menu icon
@@ -89,7 +92,6 @@ function init(version) {
 		"woot": $("#ws-woot")[0],
 		"join": $("ws-join")[0],
 		"video": $("ws-video")[0],
-		"delchat": $("ws-delChat")[0],
 		"css": $("ws-css")[0],
 		"oldChat": $("ws-old-chat")[0],
 		"bg": $("ws-bg")[0],
@@ -106,7 +108,7 @@ function firstRun() {
 	autowoot();
 	autojoin();
 	askBG(true);
-	alertDuration(true);
+	initAlertDuration(true);
 	
 	// API initalization
 	API.on(API.CHAT_COMMAND, chatCommand);
@@ -130,41 +132,11 @@ function firstRun() {
 		}
 	});
 
-	// Event listener for buttons
-	item.woot.click(function(){
-		json.autoW = !json.autoW;
-		autowoot();
-	});
-	item.join.click(function(){
-		json.autoDJ = !json.autoDJ;
-		autojoin();
-	});
-	item.video.click(function(){
-		json.showVideo = !json.showVideo;
-		hideStream();
-	});
-	item.delchat.click(function(){
-		/*If the same user speak before and after the clear, message won't display*/
-		API.chatLog("I am a bug fix."); // <-- This fix it
-		$("#chat-messages")[0].innerHTML = "";
-	});
-	item.lengthA.click(function(){
-		// init and alert must be two separate functions
-		if (default) {
-			var time[0] = 435;
-		} else {
-			// improvments may be done looking for minutes only
-			var time = prompt("Song limit in minutes\nexemple: 64,30 is 1h4min30s\n(minimum is 1min)");
-			time = time.split(",");
-			time[0] = time[0]*60;
-			time[0] = parseInt(time[0]) + parseInt(time[1]);
-		}
-	});
-
 	// Fully loaded "alert"
 	API.chatLog("WiBla Script " + json.V + " loaded !");
 	API.chatLog("Type /list for commands list.");
 	API.chatLog("If you see some bugs, try the official version http://wibla.free.fr !");
+	API.chatLog(":warning: The clearchat button has been replaced since /clear do the same");
 }
 function autowoot() {
 	if (json.autoW === true) {
@@ -205,9 +177,28 @@ function hideStream() {
 	} else {
 		item.stream.style.visibility = "hidden";
 		item.stream.style.height = "0";
-		ws_rmvDJ[0].style.top = wsSkip[0].style.top = "0";
+		item.rmvDJ[0].style.top = item.skip[0].style.top = "0";
 		$("#playback-controls")[0].style.visibility = "hidden";
 		item.video.className = "ws-on";
+	}
+}
+function style() {
+	json.CSS = !json.CSS;
+	if (json.CSS) {
+		$("#WiBla-CSS")[0].setAttribute("href", min_css);
+		wsCss[0].className = "ws-off";
+	} else {
+		$("#WiBla-CSS")[0].setAttribute("href", max_css);
+		wsCss[0].className = "ws-on";
+	}
+}
+function oldChat() {
+	if (oldChat) {
+		item.oldChat.className = "ws-on";
+		$("#WiBla-Old-Chat-CSS")[0].setAttribute("href", old_chat);
+	} else {
+		item.oldChat.className = "ws-off";
+		$("#WiBla-Old-Chat-CSS")[0].setAttribute("href", "");
 	}
 }
 function askBG(base) {
@@ -224,11 +215,24 @@ function askBG(base) {
 		$(".room-background")[0].setAttribute("style", style);
 		item.bg.className = "ws-on";
 	} else {
-
+		return;
+	}
+}
+function initAlertDuration(base) {
+	if (base) {
+		json.time = 435;
+		alertDuration(true);
+	} else {
+		// improvments may be done looking for minutes only
+		time = prompt("Song limit in minutes\nexemple: 64,30 is 1h4min30s\n(minimum is 1min)");
+		time = time.split(",");
+		time[0] = time[0]*60;
+		time[0] = parseInt(time[0]) + parseInt(time[1]);
+		alertDuration(time[0]);
 	}
 }
 function alertDuration(base) {
-	if (durationAlert) {
+	if (json.durationAlert) {
 		item.lengthA.className = "ws-on";
 		if (API.getMedia().duration > time[0]) {
 			notif.play();
@@ -238,8 +242,6 @@ function alertDuration(base) {
 		item.lengthA.className = "ws-off";
 	}
 }
-
-// TO VERIFY
 function WiBla_Script_Shutdown() {
 	API.stopListening(API.CHAT_COMMAND, chatCommand);
 	API.stopListening(API.ADVANCE, alertDuration);
@@ -273,6 +275,7 @@ function slide() {
 		menu.style.right = "345px";
 	}
 }
+
 function removeDJ() {
 	API.chatLog("This button will kick of the DJ from the wait-list, but doesn't work atm");
 }

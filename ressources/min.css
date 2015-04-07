@@ -43,10 +43,9 @@
 }
 #Settings li {
 	cursor: pointer;
-	text-align: right;
+	text-align: center;
 	font-size: 22px;
 	color: #808691;
-	padding-right: 3px;
 }
 #Settings li:hover {
 	background: radial-gradient(#111, #1A1A1A);
